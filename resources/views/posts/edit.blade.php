@@ -16,7 +16,7 @@
         </div>
 
 
-        <form action="{{ route('posts.update', $post) }}" method="POST">
+        <form action="{{ route('posts.update', $post) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -41,6 +41,23 @@
                     </textarea>
 
                 @error('body')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- ADD IMAGE INPUT --}}
+            <div class="mt-4">
+                <label for="image" class="block">Current image</label>
+                <div class="w-full h-48 my-2">
+                    <img src="{{ asset('storage/' . $post->image) }}" class="w-full h-48 object-cover rounded-md"
+                        alt="Post cover image">
+                </div>
+                <label for="image" class="block my-2">Post image</label>
+                <input type="file" name="image" id="image"
+                    class="w-full border p-2 rounded-md
+                    @error('image') border-red-500 @enderror">
+
+                @error('image')
                     <p class="text-red-500 text-sm">{{ $message }}</p>
                 @enderror
             </div>

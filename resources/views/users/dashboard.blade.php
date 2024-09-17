@@ -18,10 +18,11 @@
         </div>
 
 
-        <form action="{{ route('posts.store') }}" method="POST">
+        <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
 
+            {{-- POST TITLE --}}
             <div class="">
                 <label for="title" class="block">Post title</label>
                 <input type="text" name="title" id="title"
@@ -35,6 +36,7 @@
 
             </div>
 
+            {{-- POST CONTENT --}}
             <div class="mt-4">
                 <label for="body" class="block">Post content</label>
                 <textarea name="body" id="body"
@@ -47,6 +49,15 @@
                 @enderror
             </div>
 
+            {{-- POST IMAGE --}}
+            <div class="mt-4">
+                <label for="image" class="block">Post image</label>
+                <input type="file" name="image" id="image"
+                    class="w-full border p-2 rounded-md
+                    @error('image') border-red-500 @enderror">
+            </div>
+
+            {{-- BTN SUMMIT --}}
             <div class="mt-4">
                 <button type="submit" class="bg-blue-500 w-full text-white px-4 py-2 rounded-md">Create</button>
             </div>
