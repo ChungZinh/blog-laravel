@@ -1,5 +1,7 @@
 <x-layout>
-    <h1 class="text-2xl font-semibold text-center my-8">Dashboard</h1>
+    <h1 class="text-2xl font-semibold text-center my-8">Welcome {{ auth()->user()->username }}, you have
+        {{ $posts->count() }}
+        posts</h1>
 
     {{-- CREATE POST --}}
     <div class="mx-auto max-w-screen-sm bg-white p-6 rounded-md shadow-md">
@@ -10,6 +12,8 @@
         <div class="">
             @if (session('success'))
                 <x-flashMsg msg="{{ session('success') }}" />
+            @elseif (session('delete'))
+                <x-flashMsg msg="{{ session('delete') }}" />
             @endif
         </div>
 
@@ -55,7 +59,19 @@
     <h2 class="font-semibold mb-4 text-center mt-8">Your Latest Posts</h2>
     <div class="grid grid-cols-2 gap-x-6">
         @foreach ($posts as $post)
-            <x-postCard :post="$post" />
+            <x-postCard :post="$post">
+                {{-- UPDATE POST --}}
+                <a href="{{ route('posts.edit', $post) }}"
+                    class="text-sm px-1 py-1 bg-green-500 text-white rounded-md">Update</a>
+
+
+                {{-- DELETE POST --}}
+                <form action="{{ route('posts.destroy', $post) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="text-sm px-1 py-1 bg-red-500 text-white rounded-md">Remove</button>
+                </form>
+            </x-postCard>
         @endforeach
     </div>
 
