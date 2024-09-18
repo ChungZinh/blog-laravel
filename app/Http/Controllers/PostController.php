@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserSubcribed;
 use App\Mail\WelcomeMail;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ class PostController extends Controller implements HasMiddleware
      */
     public function index()
     {
+
         $post = Post::latest()->paginate(10);
 
         return view('posts.index', ['posts' => $post]);

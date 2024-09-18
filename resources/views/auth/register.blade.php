@@ -48,6 +48,11 @@
                     @enderror">
             </div>
 
+            <div class="mb-4 flex  items-center gap-2">
+                <input type="checkbox" name="subcribe" id="subcribe">
+                <label for="subcribe">Subcribe to our newsletter</label>
+            </div>
+
             {{-- REGISTER BUTTON --}}
             <button x-ref="btn"
                 class="btn bg-slate-800 w-full py-2 rounded-md text-white hover:bg-slate-600 duration-300">Register</button>
