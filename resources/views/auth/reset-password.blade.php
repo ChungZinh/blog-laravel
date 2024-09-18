@@ -1,19 +1,12 @@
 <x-layout>
-    <h1 class="text-center my-10 text-4xl">Login</h1>
-    
-     {{-- SESSION MESSAGES --}}
-     <div class="">
-        @if (session('status'))
-            <x-flashMsg msg="{{ session('status') }}" />
-        @elseif (session('email'))
-            <x-flashMsg msg="{{ session('email') }}" bg='bg-red-500' />
-        @endif
-    </div>
-
+    <h1 class="text-center my-10 text-4xl">Reset your password</h1>
     <div class="mx-auto max-w-screen-sm p-4 border rounded-lg bg-white shadow-md">
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('password.update') }}" method="POST">
             @csrf
             @method('POST')
+
+            <input type="hidden" name='token' value="{{ $token }}">
+
             {{-- EMAIL --}}
             <div class="mb-4">
                 <label for="email">Email</label>
@@ -36,23 +29,18 @@
                     <p class="text-red-500 text-sm">*{{ $message }}</p>
                 @enderror
             </div>
-            {{-- REMEMBER --}}
-            <div class="mb-4 flex items-center justify-between">
-                <div class="flex items-center">
-                    <input type="checkbox" name="remember" id="remember" class="mr-2">
-                    <label for="remember">Remember me</label>
-                </div>
-
-                <a href="{{ route('password.request') }}" class="text-sm text-blue-500">Forgot your password?</a>
+            {{-- PASSWORD CONFIRMATION --}}
+            <div class="mb-8">
+                <label for="password_confirmation">Password Confirmation</label>
+                <input type="password" id="password_confirmation" name="password_confirmation"
+                    class="input @error('password')
+                         ring-red-500
+                    @enderror">
             </div>
 
-            @error('failed')
-                <p class="text-red-500 text-sm">*{{ $message }}</p>
-            @enderror
-
-            {{-- LOGIN BUTTON --}}
-            <button
-                class="btn bg-slate-800 w-full py-2 rounded-md text-white hover:bg-slate-600 duration-300">Login</button>
+            {{-- REGISTER BUTTON --}}
+            <button class="btn bg-slate-800 w-full py-2 rounded-md text-white hover:bg-slate-600 duration-300">Reset
+                Password</button>
         </form>
     </div>
 </x-layout>
