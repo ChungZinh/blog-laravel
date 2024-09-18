@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\WelcomeMail;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller implements HasMiddleware
@@ -63,13 +65,17 @@ class PostController extends Controller implements HasMiddleware
 
 
         //CREATE POST
-        Auth::user()->posts()->create(
+        $post = Auth::user()->posts()->create(
             [
                 'title' => $request->title,
                 'body' => $request->body,
                 'image' => $path
             ]
         );
+
+        //SEND EMAIL
+        Mail::to(Auth::user())->send(new WelcomeMail(Auth::user(), $post));
+
 
         //REDIRECT
         return back()->with('success', 'Post Created Successfully!');
@@ -118,7 +124,7 @@ class PostController extends Controller implements HasMiddleware
         //UPLOAD IMAGE
         $path = $post->image ?? null;
         if ($request->hasFile('image')) {
-            if($post->image){
+            if ($post->image) {
                 Storage::disk('public')->delete($post->image);
             }
             $path = Storage::disk('public')->put('posts_images', $request->image);
